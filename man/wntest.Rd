@@ -2,10 +2,10 @@
 % Please edit documentation in R/wntest.R
 \name{wntest}
 \alias{wntest}
-\title{Test_our_new}
+\title{Our new method to test white noise}
 \usage{
 wntest(Y, M, k_max = 10, kk, type = 1, alpha = 0.05, k0 = 10,
-  delta = 1.5, opt = 1)
+  delta = 1.5, opt = 1, lambda = 0.1, S1 = NULL)
 }
 \arguments{
 \item{Y}{is input multivaraite time series data}
@@ -14,24 +14,33 @@ wntest(Y, M, k_max = 10, kk, type = 1, alpha = 0.05, k0 = 10,
 
 \item{k_max}{is a parameter (for example default 10)}
 
-\item{kk}{is a vector of parameters, could be a scalar as well (kk = c(2:10))}
+\item{kk}{is a vector of lag parameters, could be a scalar as well (for example, kk = c(2:10))}
 
-\item{type}{1: wntest, 2: test_LM, 3: test_pre, 4: test_TB
-type = 1 need X, k_max, ,kk, M, bw, type = 2 need Y, k, type = 3: need Y, k_max, kk, type = 4: need Y}
+\item{type}{1: wntest, parameter needed: Y, k_max, ,kk, M, bw,\\
+2: test_LM, parameter needed: Y, k,\\
+3: test_pre, parameter needed: Y, k_max, kk\\
+4: test_TB, parameter needed: Y}
 
-\item{alpha}{level of significance}
+\item{alpha}{level of significance (default value 0.05)}
 
 \item{k0}{is parameter in time series PCA for transformation (default 10)}
 
 \item{delta}{is 2nd parameter in time series PCA for transformation (default 1.5)}
 
-\item{opt}{= 1, perform transformation, else do not perform transformation}
+\item{opt, }{1: perform transformation using fastclime to do the precision matrix estimation\\
+2: perform transformation using with sample covariance matrix\\
+3: perform transformation using clime with cross validation to do the precision matrix estimation\\
+else do not do transformation}
+
+\item{lambda}{= 0.1 This is the smallest value of lambda you would like the solver to explorer in fastclime package. The default value is 0.1.}
+
+\item{S1}{True covariance matrix of the data if known}
 }
 \value{
-res white noise or not
+res white noise test result at lag k (0) or not (1)
 }
 \description{
-Our new method to test white noise
+Methods to test white noise, including our new test method, testLM, test_pre and test_TB
 }
 \examples{
 library(expm)

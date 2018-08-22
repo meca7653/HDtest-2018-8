@@ -4,8 +4,7 @@
 #' @description This is an auxillary function to compute the autocovariance matrix for multivariate time series at lag k.
 #' @param Y A multivariate time series.
 #' @param k The lag k.
-#'
-#' @details  Compute the autocovariance matrix of mutlivariate time series \eqn{Y} at lag \eqn{k}.
+#' @details Compute the autocovariance matrix of mutlivariate time series \eqn{Y} at lag \eqn{k}.
 #' @return sm The autocovariace matrix at lag k.
 #' @import MASS
 #' @author Meng Cao, Wen Zhou

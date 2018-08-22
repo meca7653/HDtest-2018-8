@@ -1,7 +1,7 @@
 Package: HDtest
 Type: Package
 Title: High Dimensional Hypothesis Testing for Mean Vectors, Covariance Matrices, and White Noise of Vector Time Series
-Version: 0.1
+Version: 1.1
 Date: 2016-12-18
 Author: Meng Cao, Tong He, Wen Zhou
 Maintainer: Meng Cao <meng.cao@colostate.edu>
@@ -15,7 +15,9 @@ Imports:
     mvtnorm,
     foreach,
     doParallel,
-    expm
+    expm,
+    fastclime,
+    clime
 License: Apache License (== 2.0)
 URL: http://www.stat.colostate.edu/~riczw/SW.html
 Repository: CRAN

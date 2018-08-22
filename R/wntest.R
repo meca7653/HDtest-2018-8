@@ -1,17 +1,27 @@
-#' Test_our_new
-#' @description Our new method to test white noise
+#' @name wntest
+#' @title  Our new method to test white noise
+#' @description Methods to test white noise, including our new test method, testLM, test_pre and test_TB
 #' @param Y is input multivaraite time series data
 #' @param k_max is a parameter (for example default 10)
-#' @param kk is a vector of parameters, could be a scalar as well (kk = c(2:10))
+#' @param kk is a vector of lag parameters, could be a scalar as well (for example, kk = c(2:10))
 #' @param M is a parameter, could be 1000, 2000 for example
 #' @param k0 is parameter in time series PCA for transformation (default 10)
 #' @param delta is 2nd parameter in time series PCA for transformation (default 1.5)
-#' @param type 1: wntest, 2: test_LM, 3: test_pre, 4: test_TB
-#' type = 1 need X, k_max, ,kk, M, bw, type = 2 need Y, k, type = 3: need Y, k_max, kk, type = 4: need Y
-#' @param alpha level of significance
-#' @param opt = 1, perform transformation, else do not perform transformation
+#' @param type 1: wntest, parameter needed: Y, k_max, ,kk, M, bw,\\
+#' 2: test_LM, parameter needed: Y, k,\\
+#' 3: test_pre, parameter needed: Y, k_max, kk\\
+#' 4: test_TB, parameter needed: Y
+#' @param alpha level of significance (default value 0.05)
+#' @param opt, 1: perform transformation using fastclime to do the precision matrix estimation\\
+#' 2: perform transformation using with sample covariance matrix\\
+#' 3: perform transformation using clime with cross validation to do the precision matrix estimation\\
+#' else do not do transformation
+#' @param lambda = 0.1 This is the smallest value of lambda you would like the solver to explorer in fastclime package. The default value is 0.1.
+#' @param S1 True covariance matrix of the data if known
+#' @import fastclime
+#' @import clime
 #' @author Meng Cao
-#' @return res white noise or not
+#' @return res white noise test result at lag k (0) or not (1)
 #' @examples
 #' library(expm)
 #' p = 15
@@ -34,12 +44,12 @@
 #'
 #' @export
 wntest = function(Y, M, k_max = 10, kk, type = 1, alpha = 0.05,
-                  k0 = 10, delta = 1.5, opt = 1, lambda = NULL,
+                  k0 = 10, delta = 1.5, opt = 1, lambda = 0.1,
                   S1 = NULL){
   if (type == 1){
     X = Y
 
-    if(opt == 1){
+    if(opt %in% c(1:3)){
       X = t(sgTs_thre(t(X), k0 = k0, delta = delta,
                       opt = opt,  lambda = lambda))
     }

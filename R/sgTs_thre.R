@@ -1,45 +1,35 @@
-sgTs_thre = function(X, k0, delta, opt=1, lambda = NULL){
+sgTs_thre = function(X, k0, delta, opt=1, lambda = 0.1){
   n = dim(X)[1]
   p = dim(X)[2]
   if (opt == 1){
-    # M = cov(X)
     L <- fastclime(X, lambda.min = 1e-7, nlambda = 800)
     out2 <- fastclime.selector(L$lambdamtx, L$icovlist,lambda)
     M_inv <- out2$icov
-    # out2$sparsity
-    # M <- L$sigmahat
-    # M = S1
-    # r = eigen(M)
-    # G = r$vectors
-    # ev = sqrt(r$values)
-    # D = matrix(rep(0, p^2), nrow = p)
-    # for (i in (1:p)){
-    #   if (ev[i] > 0){
-    #     D[i,i] = 1/(ev[i])
-    #   }
-    # }
     rr <- eigen(M_inv)
     vv <- sqrt(rr$value)
     vv[rr$value <= 0] = 0
     G <- rr$vector
     M1 <- (G) %*% diag(vv) %*% t(G)
-    # M1 <- sqrtm(M_inv)
-    # M1 = (G) %*% D %*% t(G)
     X1 = M1 %*% t(X)
     Xn = X1
   }else if(opt== 2){
-    M = S1
+    M = cov(X)
     X1 = solve(sqrtm(M)) %*% t(X) #A\B ==> solve(A)%*%B
     Xn = X1
-    #   }else if(opt == 3){
-    #     X = t(X)
-    #     M =CLIME(X, sqrt(log(p)/n)*2)
-    #     r = eigen(M)
-    #     G = r$vectors
-    #     ev = sqrt(r$values)
-    #     M1 = G %*% diag(sqrt(ev), nrow = length(ev), ncol = length(ev)) %*% t(G)
-    #     X1 = M1 %*% X
-    #     Xn = X1
+  }else if(opt == 3){
+    L <- clime(X, standardize = F, lambda.min = 1e-6)
+    re.cv <- cv.clime(L, loss = "tracel2")
+    re.clime.opt <- clime(X, standardize=FALSE, re.cv$lambdaopt)
+    print(re.cv$lambdaopt)
+    message(print(re.cv$lambdaopt))
+    M_inv <- re.clime.opt$Omegalist[[1]]
+    rr <- eigen(M_inv)
+    vv <- sqrt(rr$value)
+    vv[rr$value <= 0] = 0
+    G <- rr$vector
+    M1 <- (G) %*% diag(vv) %*% t(G)
+    X1 = M1 %*% t(X)
+    Xn = X1
   }
 
   mean_Xn = apply(Xn, 1, mean)
