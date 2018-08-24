@@ -27,7 +27,7 @@ wntest(Y, M, k_max = 10, kk, type = 1, alpha = 0.05, k0 = 10,
 
 \item{delta}{is 2nd parameter in time series PCA for transformation (default 1.5)}
 
-\item{opt, }{1: perform transformation using fastclime to do the precision matrix estimation\\
+\item{opt}{1: perform transformation using fastclime to do the precision matrix estimation\\
 2: perform transformation using with sample covariance matrix\\
 3: perform transformation using clime with cross validation to do the precision matrix estimation\\
 else do not do transformation}

@@ -12,7 +12,7 @@
 #' 3: test_pre, parameter needed: Y, k_max, kk\\
 #' 4: test_TB, parameter needed: Y
 #' @param alpha level of significance (default value 0.05)
-#' @param opt, 1: perform transformation using fastclime to do the precision matrix estimation\\
+#' @param opt 1: perform transformation using fastclime to do the precision matrix estimation\\
 #' 2: perform transformation using with sample covariance matrix\\
 #' 3: perform transformation using clime with cross validation to do the precision matrix estimation\\
 #' else do not do transformation
