@@ -15,8 +15,11 @@
 #' @param opt 1: perform transformation using fastclime to do the precision matrix estimation\\
 #' 2: perform transformation using with sample covariance matrix\\
 #' 3: perform transformation using clime with cross validation to do the precision matrix estimation\\
+#' 4: perform transformation using fastclime with cross validation to do the precision matrix estimation
 #' else do not do transformation
 #' @param lambda = 0.1 This is the smallest value of lambda you would like the solver to explorer in fastclime package. The default value is 0.1.
+#' @param lambda_search = seq(1e-4, 1e-2, length.out = 50) tunning parameters search for fastclime
+#' @param fold number of folds used in corss validation. Default 5.
 #' @param S1 True covariance matrix of the data if known
 #' @import fastclime
 #' @import clime
@@ -44,14 +47,19 @@
 #'
 #' @export
 wntest = function(Y, M, k_max = 10, kk, type = 1, alpha = 0.05,
-                  k0 = 10, delta = 1.5, opt = 1, lambda = 0.1,
+                  k0 = 10, delta = 1.5, opt = 1, lambda = 0.01,
+                  lambda_search = seq(1e-4, 1e-2, length.out = 50),
+                  fold = 5,
                   S1 = NULL){
   if (type == 1){
     X = Y
 
     if(opt %in% c(1:3)){
       X = t(sgTs_thre(t(X), k0 = k0, delta = delta,
-                      opt = opt,  lambda = lambda))
+                      opt = opt,  lambda = lambda,
+                      lambda_search = lambda_search,
+                      fold = fold
+                      ))
     }
     bw = opbw(X)
     p = dim(X)[1]
