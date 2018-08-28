@@ -2,6 +2,7 @@
 cv_fastclime <- function(X, fold = 5, lambda = seq(1e-4, 1e-2, length.out = 50)){
   n = dim(X)[1]
   p = dim(X)[2]
+  ii = ll = NULL #define the variables
   res_cv <- foreach(ii = c(1:fold), .combine = "rbind")%do%{
     ind_train <- c(1:n)[-c(c(1:floor(n/fold)) + (ii - 1) * (n/fold))]
     train <- X[ind_train,]

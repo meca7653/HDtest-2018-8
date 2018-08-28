@@ -23,6 +23,7 @@
 #' @param S1 True covariance matrix of the data if known
 #' @import fastclime
 #' @import clime
+#' @import foreach
 #' @author Meng Cao
 #' @return res white noise test result at lag k (0) or not (1)
 #' @examples
