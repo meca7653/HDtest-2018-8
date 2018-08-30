@@ -16,7 +16,8 @@ sgTs_thre = function(X, k0, delta, opt=1, lambda = 0.1,
     Xn = X1
   }else if(opt== 2){
     M = cov(X)
-    X1 = solve(sqrtm(M)) %*% t(X) #A\B ==> solve(A)%*%B
+    M1 = solve(sqrtm(M))
+    X1 = M1 %*% t(X) #A\B ==> solve(A)%*%B
     Xn = X1
   }else if(opt == 3){
     L <- clime(X, standardize = F, lambda.min = 1e-6)
