@@ -16,7 +16,10 @@ cv_fastclime <- function(X, fold = 5, lambda = seq(1e-4, 1e-2, length.out = 50))
     res_pre
   }
   # la <- lambda[which.min(apply(res_cv, 2, mean))]
-  la <- lambda[which(order(apply(res_cv, 2, mean)) == 30)]
+  cv_mean <- apply(res_cv, 2, mean)
+  cv_min <- apply(res_cv, 2, min)
+  # la <- lambda[which(order(apply(res_cv, 2, mean)) == 30)]
+  la <- lambda[which.max(cv_min <= min(cv_mean))]
   L_final <- fastclime(X, lambda.min = 1e-7, nlambda = 3000)
   out <- fastclime.selector(L_final$lambdamtx, L_final$icovlist,la)
   M_inv_final <- out$icov
