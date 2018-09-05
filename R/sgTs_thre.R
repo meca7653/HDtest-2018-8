@@ -1,6 +1,6 @@
 sgTs_thre = function(X, k0, delta, opt=1, lambda = 0.1,
                      lambda_search = seq(1e-4, 1e-2, length.out = 50),
-                     fold = 5){
+                     fold = 5, cv_opt = cv_opt){
   n = dim(X)[1]
   p = dim(X)[2]
   if (opt == 1){
@@ -34,7 +34,7 @@ sgTs_thre = function(X, k0, delta, opt=1, lambda = 0.1,
     X1 = M1 %*% t(X)
     Xn = X1
   }else if(opt == 4){
-    M_inv <- cv_fastclime(X, fold = fold, lambda = lambda_search)
+    M_inv <- cv_fastclime(X, fold = fold, lambda = lambda_search, cv_opt = cv_opt)
     rr <- eigen(M_inv)
     vv <- sqrt(rr$value)
     vv[rr$value <= 0] = 0
