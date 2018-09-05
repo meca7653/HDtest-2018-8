@@ -18,7 +18,7 @@
 #' 4: perform transformation using fastclime with cross validation to do the precision matrix estimation
 #' else do not do transformation
 #' @param lambda This is the smallest value of lambda you would like the solver to explorer in fastclime package. The default value is 0.1.
-#' @param lambda_search tunning parameters search for fastclime. Default seq(1e-4, 1e-2, length.out = 50)
+#' @param lambda_search tuning parameters search for fastclime. Default seq(1e-4, 1e-2, length.out = 50)
 #' @param fold number of folds used in corss validation. Default 5.
 #' @param S1 True covariance matrix of the data if known
 #' @param cv_opt 1:minimum

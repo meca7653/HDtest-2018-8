@@ -20,8 +20,8 @@ cv_fastclime <- function(X, fold = 5, lambda = seq(1e-4, 1e-2, length.out = 50),
   }else if(cv_opt == 2){
     cv_mean <- apply(res_cv, 2, mean)
     cv_sd <- apply(res_cv, 2, sd)
-    # la <- lambda[which(order(apply(res_cv, 2, mean)) == 30)]
-    la <- lambda[which.max(cv_mean >= (cv_mean - cv_sd)[which.min(cv_mean)])]
+    la <- lambda[which(order(apply(res_cv, 2, mean)) == 30)]
+    # la <- lambda[which.max(cv_mean >= (cv_mean - cv_sd)[which.min(cv_mean)])]
   }
 
 
