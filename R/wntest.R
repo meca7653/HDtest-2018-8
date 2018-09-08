@@ -21,8 +21,7 @@
 #' @param lambda_search tuning parameters search for fastclime. Default seq(1e-4, 1e-2, length.out = 50)
 #' @param fold number of folds used in corss validation. Default 5.
 #' @param S1 True covariance matrix of the data if known
-#' @param cv_opt 1:minimum
-#' 2: one standard deviation tunning
+#' @param cv_opt which cross validation result to report (default value 1: minimun error)
 #' @import fastclime
 #' @import clime
 #' @import foreach
