@@ -66,8 +66,8 @@ wntest = function(Y, M, k_max = 10, kk, type = 1, alpha = 0.05,
                       lambda_search = lambda_search,
                       fold = fold, cv_opt = cv_opt
                       )
-      X <- t(X_pre[1,1]$X1)
-      M1 <- X_pre[1,2]$M1
+      X <- t(X_pre$X1)
+      M1 <- X_pre$M1
     }
     bw = opbw(X)
     p = dim(X)[1]
