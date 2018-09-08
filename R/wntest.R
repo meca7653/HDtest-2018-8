@@ -7,13 +7,13 @@
 #' @param M is a parameter, could be 1000, 2000 for example
 #' @param k0 is parameter in time series PCA for transformation (default 10)
 #' @param delta is 2nd parameter in time series PCA for transformation (default 1.5)
-#' @param type 1: wntest, parameter needed: Y, k_max, ,kk, M, bw,\\
-#' 2: test_LM, parameter needed: Y, k,\\
-#' 3: test_pre, parameter needed: Y, k_max, kk\\
+#' @param type 1: wntest, parameter needed: Y, k_max, ,kk, M, bw,
+#' 2: test_LM, parameter needed: Y, k,
+#' 3: test_pre, parameter needed: Y, k_max, kk
 #' 4: test_TB, parameter needed: Y
 #' @param alpha level of significance (default value 0.05)
 #' @param opt 1: perform transformation using fastclime to do the precision matrix estimation\\
-#' 2: perform transformation using with sample covariance matrix\\
+#' 2: perform transformation using with sample covariance matrix
 #' 3: perform transformation using clime with cross validation to do the precision matrix estimation\\
 #' 4: perform transformation using fastclime with cross validation to do the precision matrix estimation
 #' else do not do transformation
