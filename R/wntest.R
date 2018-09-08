@@ -58,11 +58,13 @@ wntest = function(Y, M, k_max = 10, kk, type = 1, alpha = 0.05,
     X = Y
 
     if(opt %in% c(1:4)){
-      X = t(sgTs_thre(t(X), k0 = k0, delta = delta,
+      X_pre = t(sgTs_thre(t(X), k0 = k0, delta = delta,
                       opt = opt,  lambda = lambda,
                       lambda_search = lambda_search,
                       fold = fold, cv_opt = cv_opt
                       ))
+      X <- X_pre$X1
+      M1 <- X_pre$M1
     }
     bw = opbw(X)
     p = dim(X)[1]
@@ -110,7 +112,7 @@ wntest = function(Y, M, k_max = 10, kk, type = 1, alpha = 0.05,
 
 
 
-    res = rep(0, length(kk))
+    res = p_value = rep(0, length(kk))
     for (jj in c(1:length(kk))){
       K = kk[jj]
       nt = n - K
@@ -126,9 +128,11 @@ wntest = function(Y, M, k_max = 10, kk, type = 1, alpha = 0.05,
       mm = apply(ft, 1, mean)
       ft = ft - mm
       cv = aeS(ft = ft, Sn = Sn[1:nt, 1:nt], W = W[1: (p^2*K)], M, alpha = 0.05)
-      res[jj] = (Tnn[jj]>cv)
+      res[jj] = (Tnn[jj]>cv$cv)
+      p_value[jj] = sum(cv$stat > Tnn[jj])/length(cv$stat)
 
     }
+    result <- list(res = res, p_value = p_value, M1 = M1)
 
 
   }else if(type == 2){
@@ -152,11 +156,13 @@ wntest = function(Y, M, k_max = 10, kk, type = 1, alpha = 0.05,
     if (p > 25){
       Tstat1 = (LM - k*p^2)/sqrt(2*k*p^2)
       res = (abs(Tstat1) > qnorm(1- alpha/2))
+      p_value <- 1 - pnorm(abs(Tstat1))
 
     }else{
       res = (LM > qchisq(p = 1 - alpha, df = k*p^2))
+      p_value <- 1 - pchisq(LM, df = k*p^2)
     }
-    # return (res)
+    result <- list(res = res, p_value = p_value)
 
   }else if(type == 3){
     #test_pre
@@ -199,6 +205,7 @@ wntest = function(Y, M, k_max = 10, kk, type = 1, alpha = 0.05,
 
     }
     res = cbind(q1,q2,q3, q1n, q2n, q3n)
+    result <- list(res = res)
   }else{
     #test_TB
     # Y = par[[1]]
@@ -218,12 +225,15 @@ wntest = function(Y, M, k_max = 10, kk, type = 1, alpha = 0.05,
     if (p > 25){
       Tstat1 = (Tstat - p^2) / sqrt(2*p^2)
       res = (abs(Tstat1) > qnorm(1-alpha/2))
+      p_value <- 1 - pnorm(abs(Tstat1))
 
     }else{
       res = (Tstat > qchisq(1-alpha, p^2))
+      p_value <- 1 - pchisq(Tstat, p^2)
     }
+    result <- list(res = res, p_value = p_value)
   }
 
-  return(res)
+  return(result)
 }
 

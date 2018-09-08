@@ -16,7 +16,7 @@ sgTs_thre = function(X, k0, delta, opt=1, lambda = 0.1,
     Xn = X1
   }else if(opt== 2){
     M = cov(X)
-    M1 = solve(sqrtm(M))
+    M1 = sqrtm(solve(M))
     X1 = M1 %*% t(X) #A\B ==> solve(A)%*%B
     Xn = X1
   }else if(opt == 3){
@@ -70,6 +70,6 @@ sgTs_thre = function(X, k0, delta, opt=1, lambda = 0.1,
   ev = rr$values
   # order(ev, decreasing = T)
   X1 = t(t(G) %*%Xn)
-  return(X1)
+  return(list(X1 = X1, M1 = M1))
 
 }

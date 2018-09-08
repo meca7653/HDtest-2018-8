@@ -28,6 +28,6 @@ aeS = function(ft, Sn, W, M, alpha){
   G1 = ft %*% xi
   G = W*G1
   cv = quantile(apply(abs(G),2, max), 1-alpha)
-  return(cv)
+  return(list(cv = cv, stat = apply(abs(G),2, max)))
 }
 
