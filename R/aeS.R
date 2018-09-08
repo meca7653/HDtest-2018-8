@@ -27,7 +27,8 @@ aeS = function(ft, Sn, W, M, alpha){
   xi = t(mvrnorm(n = M, mu = rep(0, n), Sn))/sqrt(n)
   G1 = ft %*% xi
   G = W*G1
-  cv = quantile(apply(abs(G),2, max), 1-alpha)
-  return(list(cv = cv, stat = apply(abs(G),2, max)))
+  rrr <- apply(abs(G),2, max)
+  cv = quantile(rrr, 1-alpha)
+  return(list(cv = cv, stat = rrr))
 }
 

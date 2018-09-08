@@ -26,6 +26,8 @@
 #' @import clime
 #' @import foreach
 #' @author Meng Cao
+#' @references Chang, J., Yao, Q. and Zhou, W., 2017. Testing for high-dimensional white noise using maximum cross-correlations. Biometrika, 104(1), pp.111-127.
+#' @references
 #' @return res white noise test result at lag k (0) or not (1)
 #' @examples
 #' library(expm)
@@ -46,6 +48,7 @@
 #' delta = 1.5
 #' alpha = 0.05
 #' wntest(X, M, k_max, kk, type = 1, opt = 0)
+#' wntest(X, M, k_max, kk, type = 1, opt = 4, cv_opt = 1)
 #'
 #' @export
 wntest = function(Y, M, k_max = 10, kk, type = 1, alpha = 0.05,
@@ -58,13 +61,13 @@ wntest = function(Y, M, k_max = 10, kk, type = 1, alpha = 0.05,
     X = Y
 
     if(opt %in% c(1:4)){
-      X_pre = t(sgTs_thre(t(X), k0 = k0, delta = delta,
+      X_pre = sgTs_thre(t(X), k0 = k0, delta = delta,
                       opt = opt,  lambda = lambda,
                       lambda_search = lambda_search,
                       fold = fold, cv_opt = cv_opt
-                      ))
-      X <- X_pre$X1
-      M1 <- X_pre$M1
+                      )
+      X <- t(X_pre[1,1]$X1)
+      M1 <- X_pre[1,2]$M1
     }
     bw = opbw(X)
     p = dim(X)[1]
@@ -132,7 +135,12 @@ wntest = function(Y, M, k_max = 10, kk, type = 1, alpha = 0.05,
       p_value[jj] = sum(cv$stat > Tnn[jj])/length(cv$stat)
 
     }
-    result <- list(res = res, p_value = p_value, M1 = M1)
+    if(opt %in% c(1:4)){
+      result <- list(res = res, p_value = p_value, M1 = M1)
+    }else{
+      result <- list(res = res, p_value = p_value)
+    }
+
 
 
   }else if(type == 2){

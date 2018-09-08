@@ -6,7 +6,7 @@
 \usage{
 wntest(Y, M, k_max = 10, kk, type = 1, alpha = 0.05, k0 = 10,
   delta = 1.5, opt = 1, lambda = 0.01, lambda_search = seq(1e-04, 0.01,
-  length.out = 50), fold = 5, S1 = NULL)
+  length.out = 50), fold = 5, S1 = NULL, cv_opt = NULL)
 }
 \arguments{
 \item{Y}{is input multivaraite time series data}
@@ -17,9 +17,9 @@ wntest(Y, M, k_max = 10, kk, type = 1, alpha = 0.05, k0 = 10,
 
 \item{kk}{is a vector of lag parameters, could be a scalar as well (for example, kk = c(2:10))}
 
-\item{type}{1: wntest, parameter needed: Y, k_max, ,kk, M, bw,\\
-2: test_LM, parameter needed: Y, k,\\
-3: test_pre, parameter needed: Y, k_max, kk\\
+\item{type}{1: wntest, parameter needed: Y, k_max, ,kk, M, bw,
+2: test_LM, parameter needed: Y, k,
+3: test_pre, parameter needed: Y, k_max, kk
 4: test_TB, parameter needed: Y}
 
 \item{alpha}{level of significance (default value 0.05)}
@@ -29,18 +29,20 @@ wntest(Y, M, k_max = 10, kk, type = 1, alpha = 0.05, k0 = 10,
 \item{delta}{is 2nd parameter in time series PCA for transformation (default 1.5)}
 
 \item{opt}{1: perform transformation using fastclime to do the precision matrix estimation\\
-2: perform transformation using with sample covariance matrix\\
+2: perform transformation using with sample covariance matrix
 3: perform transformation using clime with cross validation to do the precision matrix estimation\\
 4: perform transformation using fastclime with cross validation to do the precision matrix estimation
 else do not do transformation}
 
-\item{lambda}{= 0.1 This is the smallest value of lambda you would like the solver to explorer in fastclime package. The default value is 0.1.}
+\item{lambda}{This is the smallest value of lambda you would like the solver to explorer in fastclime package. The default value is 0.1.}
 
-\item{lambda_search}{= seq(1e-4, 1e-2, length.out = 50) tunning parameters search for fastclime}
+\item{lambda_search}{tuning parameters search for fastclime. Default seq(1e-4, 1e-2, length.out = 50)}
 
 \item{fold}{number of folds used in corss validation. Default 5.}
 
 \item{S1}{True covariance matrix of the data if known}
+
+\item{cv_opt}{which cross validation result to report (default value 1: minimun error)}
 }
 \value{
 res white noise test result at lag k (0) or not (1)
@@ -68,6 +70,9 @@ delta = 1.5
 alpha = 0.05
 wntest(X, M, k_max, kk, type = 1, opt = 0)
 
+}
+\references{
+Chang, J., Yao, Q. and Zhou, W., 2017. Testing for high-dimensional white noise using maximum cross-correlations. Biometrika, 104(1), pp.111-127.
 }
 \author{
 Meng Cao
