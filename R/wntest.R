@@ -27,8 +27,10 @@
 #' @import foreach
 #' @author Meng Cao
 #' @references Chang, J., Yao, Q. and Zhou, W., 2017. Testing for high-dimensional white noise using maximum cross-correlations. Biometrika, 104(1), pp.111-127.
-#' @references
-#' @return res white noise test result at lag k (0) or not (1)
+#' @references Cai, T.T., Liu, W., and Luo, X. (2011). A constrained `1 minimization approach for sparse precision matrix estimation. Journal of the American Statistical Association 106(494): 594-607.
+#' @return res white noise test result (0) or not (1)
+#' p_value p_value for the result
+#' M1 sqrtm of the estimated inverse covariance matrix if use transfermation
 #' @examples
 #' library(expm)
 #' p = 15

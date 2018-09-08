@@ -45,7 +45,9 @@ else do not do transformation}
 \item{cv_opt}{which cross validation result to report (default value 1: minimun error)}
 }
 \value{
-res white noise test result at lag k (0) or not (1)
+\item{res}{white noise test result (0) or not (1)}
+\item{p_value}{p_value for the result}
+\item{M1}{sqrtm of the estimated inverse covariance matrix if use transfermation}
 }
 \description{
 Methods to test white noise, including our new test method, testLM, test_pre and test_TB
@@ -69,10 +71,13 @@ k0 = 10
 delta = 1.5
 alpha = 0.05
 wntest(X, M, k_max, kk, type = 1, opt = 0)
+wntest(X, M, k_max, kk, type = 1, opt = 4, cv_opt = 1)
 
 }
 \references{
 Chang, J., Yao, Q. and Zhou, W., 2017. Testing for high-dimensional white noise using maximum cross-correlations. Biometrika, 104(1), pp.111-127.
+
+Cai, T.T., Liu, W., and Luo, X. (2011). A constrained `1 minimization approach for sparse precision matrix estimation. Journal of the American Statistical Association 106(494): 594-607.
 }
 \author{
 Meng Cao
