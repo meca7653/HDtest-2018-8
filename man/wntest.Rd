@@ -18,10 +18,10 @@ wntest(Y, M, k_max = 10, kk, type = 1, alpha = 0.05, k0 = 10,
 \item{kk}{A vector of lags to be tested (ex. kk = seq(2,10, by = 2)), scalar is allowed.}
 
 \item{type}{Type of test to perform:
-1: wntest, Testing for high-dimensional white noise using maximum cross-correlations. Biometrika, 104(1), pp.111-127.
-2: test_LM, parameter needed: Y, k,
-3: test_pre, parameter needed: Y, k_max, kk
-4: test_TB, parameter needed: Y}
+1: Testing for high-dimensional white noise using maximum cross-correlations. Biometrika, 104(1), pp.111-127;
+2: Lagrange multiplier test;
+3: Three test together (Box & Pierce (1970) test, Hosking (1980), Li & McLeod (1981)): Results get from both chi-square and normal distributions;
+4: Tiao & Box (1981) test.}
 
 \item{alpha}{Level of significance (default is 0.05).}
 
@@ -53,6 +53,13 @@ else do not do transformation}
 }
 \description{
 Methods to test high-dimensional white noise.
+}
+\details{
+Methods to test high-dimensional white noise including:
+1: Testing for high-dimensional white noise using maximum cross-correlations. Biometrika, 104(1), pp.111-127;
+2: Lagrange multiplier test;
+3: Three test together (Box & Pierce (1970) test, Hosking (1980), Li & McLeod (1981)): Results get from both chi-square and normal distributions;
+4: Tiao & Box (1981) test.
 }
 \examples{
 library(expm)

@@ -1,6 +1,11 @@
 #' @name wntest
 #' @title Testing for high-dimensional white noise
 #' @description Methods to test high-dimensional white noise.
+#' @details Methods to test high-dimensional white noise including:
+#' 1: Testing for high-dimensional white noise using maximum cross-correlations. Biometrika, 104(1), pp.111-127;
+#' 2: Lagrange multiplier test;
+#' 3: Three test together (Box & Pierce (1970) test, Hosking (1980), Li & McLeod (1981)): Results get from both chi-square and normal distributions;
+#' 4: Tiao & Box (1981) test.
 #' @param Y A p by n data matrix of p time series of length n.
 #' @param k_max The largest number of lags to be tested for white noise (default is 10).
 #' @param kk A vector of lags to be tested (ex. kk = seq(2,10, by = 2)), scalar is allowed.
@@ -8,10 +13,10 @@
 #' @param k0 A parameter in time series PCA for pre-transformation (default is 10).
 #' @param delta The thresholding parameter in time series PCA for pre-transformation (default is 1.5).
 #' @param type Type of test to perform:
-#' 1: wntest, Testing for high-dimensional white noise using maximum cross-correlations. Biometrika, 104(1), pp.111-127.
-#' 2: test_LM, parameter needed: Y, k,
-#' 3: test_pre, parameter needed: Y, k_max, kk
-#' 4: test_TB, parameter needed: Y
+#' 1: Testing for high-dimensional white noise using maximum cross-correlations. Biometrika, 104(1), pp.111-127;
+#' 2: Lagrange multiplier test;
+#' 3: Three test together (Box & Pierce (1970) test, Hosking (1980), Li & McLeod (1981)): Results get from both chi-square and normal distributions;
+#' 4: Tiao & Box (1981) test.
 #' @param alpha Level of significance (default is 0.05).
 #' @param opt Options for transfermation:
 #' 1: perform transformation using fastclime to do the precision matrix estimation.
@@ -230,7 +235,7 @@ wntest = function(Y, M, k_max = 10, kk, type = 1, alpha = 0.05,
     res = cbind(q1,q2,q3, q1n, q2n, q3n)
     p_value <- cbind(p_value1, p_value2, p_value3,
                      p_value1n, p_value2n, p_value3n)
-    result <- list(res = res, p_value)
+    result <- list(res = res, p_value = p_value)
   }else{
     #test_TB
     # Y = par[[1]]
