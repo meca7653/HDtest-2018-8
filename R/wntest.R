@@ -1,36 +1,39 @@
 #' @name wntest
-#' @title  Our new method to test white noise
-#' @description Methods to test white noise, including our new test method, testLM, test_pre and test_TB
-#' @param Y is input multivaraite time series data
-#' @param k_max is a parameter (for example default 10)
-#' @param kk is a vector of lag parameters, could be a scalar as well (for example, kk = c(2:10))
-#' @param M is a parameter, could be 1000, 2000 for example
-#' @param k0 is parameter in time series PCA for transformation (default 10)
-#' @param delta is 2nd parameter in time series PCA for transformation (default 1.5)
-#' @param type 1: wntest, parameter needed: Y, k_max, ,kk, M, bw,
+#' @title Testing for high-dimensional white noise
+#' @description Methods to test high-dimensional white noise.
+#' @param Y A p by n data matrix of p time series of length n.
+#' @param k_max The largest number of lags to be tested for white noise (default is 10).
+#' @param kk A vector of lags to be tested (ex. kk = seq(2,10, by = 2)), scalar is allowed.
+#' @param M Number of bootstrap replicates, ex. 2000.
+#' @param k0 A parameter in time series PCA for pre-transformation (default is 10).
+#' @param delta The thresholding parameter in time series PCA for pre-transformation (default is 1.5).
+#' @param type Type of test to perform:
+#' 1: wntest, Testing for high-dimensional white noise using maximum cross-correlations. Biometrika, 104(1), pp.111-127.
 #' 2: test_LM, parameter needed: Y, k,
 #' 3: test_pre, parameter needed: Y, k_max, kk
 #' 4: test_TB, parameter needed: Y
-#' @param alpha level of significance (default value 0.05)
-#' @param opt 1: perform transformation using fastclime to do the precision matrix estimation\\
-#' 2: perform transformation using with sample covariance matrix
-#' 3: perform transformation using clime with cross validation to do the precision matrix estimation\\
-#' 4: perform transformation using fastclime with cross validation to do the precision matrix estimation
+#' @param alpha Level of significance (default is 0.05).
+#' @param opt Options for transfermation:
+#' 1: perform transformation using fastclime to do the precision matrix estimation.
+#' 2: perform transformation using with sample covariance matrix.
+#' 3: perform transformation using clime with cross validation to do the precision matrix estimation.
+#' 4: perform transformation using fastclime with cross validation to do the precision matrix estimation.
 #' else do not do transformation
-#' @param lambda This is the smallest value of lambda you would like the solver to explorer in fastclime package. The default value is 0.1.
-#' @param lambda_search tuning parameters search for fastclime. Default seq(1e-4, 1e-2, length.out = 50)
-#' @param fold number of folds used in corss validation. Default 5.
-#' @param S1 True covariance matrix of the data if known
-#' @param cv_opt which cross validation result to report (default value 1: minimun error)
+#' @param lambda The tuning parameter used in package fastclime.  The default value is 0.1.
+#' @param lambda_search The tuning parameters search for fastclime. Default seq(1e-4, 1e-2, length.out = 50).
+#' @param fold Nnumber of folds used in corss validation. Default 5.
+#' @param S1 True contempaneous covariance matrix of the data if known in advance.
+#' @param cv_opt Cross validation result to report (default value 1: minimun error).
 #' @import fastclime
 #' @import clime
 #' @import foreach
-#' @author Meng Cao
+#' @author Meng Cao, Wen Zhou
 #' @references Chang, J., Yao, Q. and Zhou, W., 2017. Testing for high-dimensional white noise using maximum cross-correlations. Biometrika, 104(1), pp.111-127.
 #' @references Cai, T.T., Liu, W., and Luo, X. (2011). A constrained `1 minimization approach for sparse precision matrix estimation. Journal of the American Statistical Association 106(494): 594-607.
-#' @return res white noise test result (0) or not (1)
-#' p_value p_value for the result
-#' M1 sqrtm of the estimated inverse covariance matrix if use transfermation
+#' @references L\"utkepohl, Helmut. New introduction to multiple time series analysis. Springer Science & Business Media, 2005.
+#' @return res white noise test result (0) or not (1).
+#' p_value P_value for the result.
+#' M1 Square root matrix of the estimated inverse covariance matrix if transfermation applied.
 #' @examples
 #' library(expm)
 #' p = 15
@@ -66,8 +69,8 @@ wntest = function(Y, M, k_max = 10, kk, type = 1, alpha = 0.05,
       X_pre = sgTs_thre(t(X), k0 = k0, delta = delta,
                       opt = opt,  lambda = lambda,
                       lambda_search = lambda_search,
-                      fold = fold, cv_opt = cv_opt
-                      )
+                      fold = fold, cv_opt = cv_opt,
+                      S1 = S1)
       X <- t(X_pre$X1)
       M1 <- X_pre$M1
     }
