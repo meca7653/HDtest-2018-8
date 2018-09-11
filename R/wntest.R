@@ -210,9 +210,9 @@ wntest = function(Y, M, k_max = 10, kk, type = 1, alpha = 0.05,
       q1[ix] = Q1 > cvK
       q2[ix] = Q2 > cvK
       q3[ix] = Q3 > cvK
-      p_value1 = 1 - pchisq(Q1, p^2*j)
-      p_value2 = 1 - pchisq(Q2, p^2*j)
-      p_value3 = 1 - pchisq(Q3, p^2*j)
+      p_value1[ix] = 1 - pchisq(Q1, p^2*j)
+      p_value2[ix] = 1 - pchisq(Q2, p^2*j)
+      p_value3[ix] = 1 - pchisq(Q3, p^2*j)
 
       Q1n = (Q1 - p^2*j)/sqrt(2*p^2*j)
       Q2n = (Q2 - p^2*j)/sqrt(2*p^2*j)
@@ -222,9 +222,9 @@ wntest = function(Y, M, k_max = 10, kk, type = 1, alpha = 0.05,
       q1n[ix] = Q1n > qnorm(1-alpha);
       q2n[ix] = Q2n > qnorm(1-alpha);
       q3n[ix] = Q3n > qnorm(1-alpha);
-      p_value1n = 1 - pnorm(Q1n)
-      p_value2n = 1 - pnorm(Q2n)
-      p_value3n = 1 - pnorm(Q3n)
+      p_value1n[ix] = 1 - pnorm(Q1n)
+      p_value2n[ix] = 1 - pnorm(Q2n)
+      p_value3n[ix] = 1 - pnorm(Q3n)
 
     }
     res = cbind(q1,q2,q3, q1n, q2n, q3n)
