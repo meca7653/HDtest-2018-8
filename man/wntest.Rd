@@ -47,9 +47,9 @@ else do not do transformation}
 \item{cv_opt}{Cross validation result to report (default value 1: minimun error).}
 }
 \value{
-\item{res}{white noise test result (0) or not (1).}
-\item{p_value}{P_value for the result.}
-\item{M1}{Square root matrix of the estimated inverse covariance matrix if transfermation applied.}
+\item{res}{White noise test result (0) or not (1).}
+\item{p_value}{P_value for the test result.}
+\item{M1}{Square root of the estimated inverse covariance matrix if transformation has been applied.}
 }
 \description{
 Methods to test high-dimensional white noise.
