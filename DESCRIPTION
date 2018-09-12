@@ -2,7 +2,7 @@ Package: HDtest
 Type: Package
 Title: High Dimensional Hypothesis Testing for Mean Vectors, Covariance Matrices, and White Noise of Vector Time Series
 Version: 2.1
-Date: 2016-12-18
+Date: 2018-9-10
 Author: Meng Cao, Tong He, Wen Zhou
 Maintainer: Wen Zhou <riczw@stat.colostate.edu>
 Description: High dimensional testing procedures on mean, covariance and white noises.
