@@ -1,16 +1,4 @@
-#' @name opbw
-#' @aliases opbw
-#' @title Optimal bandwidth to estimate long-run covariance
-#' @description This is an auxillary function to estimate the bandwidth that used to estimate the long run covariance for testing multivariate white nosies.
-#'
-#' @param X \eqn{p x n} data matrix, with \eqn{p} time series of length \eqn{n}
-#'
-#' @return An optimal bandwidth.
-#'
-#' @references J. Chang, Q. Yao, and W. Zhou (2016) Testing for high-dimensional white noise using maximum cross correlations. \emph{Biometrika}, to appear.
-#' @author Meng Cao, Wen Zhou
-#' @export
-#'
+
 
 opbw = function(X){
   p = dim(X)[1]

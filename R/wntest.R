@@ -1,44 +1,103 @@
 #' @name wntest
-#' @title Testing for high-dimensional white noise
-#' @description Methods to test high-dimensional white noise.
-#' @details Methods to test high-dimensional white noise including:
-#' 1: Testing for high-dimensional white noise using maximum cross-correlations. Biometrika, 104(1), pp.111-127;
-#' 2: Lagrange multiplier test;
-#' 3: Three test together (Box & Pierce (1970) test, Hosking (1980), Li & McLeod (1981)): Results get from both chi-square and normal distributions;
-#' 4: Tiao & Box (1981) test.
-#' @param Y A p by n data matrix of p time series of length n.
-#' @param k_max The largest number of lags to be tested for white noise (default is 10).
-#' @param kk A vector of lags to be tested (ex. kk = seq(2,10, by = 2)), scalar is allowed.
-#' @param M Number of bootstrap replicates, ex. 2000.
-#' @param k0 A parameter in time series PCA for pre-transformation (default is 10).
-#' @param delta The thresholding parameter in time series PCA for pre-transformation (default is 1.5).
-#' @param type Type of test to perform:
-#' 1: Testing for high-dimensional white noise using maximum cross-correlations. Biometrika, 104(1), pp.111-127;
-#' 2: Lagrange multiplier test;
-#' 3: Three test together (Box & Pierce (1970) test, Hosking (1980), Li & McLeod (1981)): Results get from both chi-square and normal distributions;
-#' 4: Tiao & Box (1981) test.
-#' @param alpha Level of significance (default is 0.05).
-#' @param opt Options for transfermation:
-#' 1: perform transformation using fastclime to do the precision matrix estimation.
-#' 2: perform transformation using with sample covariance matrix.
-#' 3: perform transformation using clime with cross validation to do the precision matrix estimation.
-#' 4: perform transformation using fastclime with cross validation to do the precision matrix estimation.
-#' else do not do transformation
-#' @param lambda The tuning parameter used in package fastclime.  The default value is 0.1.
-#' @param lambda_search The tuning parameters search for fastclime. Default seq(1e-4, 1e-2, length.out = 50).
-#' @param fold Nnumber of folds used in corss validation. Default 5.
-#' @param S1 True contempaneous covariance matrix of the data if known in advance.
-#' @param cv_opt Cross validation result to report (default value 1: minimun error).
+#' @title Testing for multivariate or high dimensional white noise
+#' @description A variety of methods to test multivariate or high-dimensional white noise,
+#' including classical methods such as the multivariate portmanteau tests,
+#'  Lagrange multiplier test, as well as the new method proposed by Chang, Yao and Zhou (2017)
+#'  based on maximum cross correlations.
+#' @details  For  a \eqn{p}-dimensional weakly stationary time
+#'series \eqn{\varepsilon_t} with mean zero, denote by
+#' \eqn{\Sigma(k)=\textrm{cov}(\varepsilon_{t+k},\varepsilon_t)} and
+#'  \eqn{\Gamma(k) = \textrm{diag}\{{\Sigma}(0)\}^{-1/2}
+#'  {\Sigma}(k)\textrm{diag}\{{\Sigma}(0)\}^{-1/2}}, respectively,
+#'  the autocovariance and the autocorrelation of  at lag \eqn{k}.
+#'  With the available observations
+#'  \eqn{\varepsilon_1, \ldots, \varepsilon_n}, let
+#'  \deqn{
+#'  \widehat{\Gamma}(k) \equiv \{\widehat{\rho}_{ij}(k)\}_{1\leq i,j\leq p}
+#'  =\textrm{diag}\{\widehat{\Sigma}(0)\}^{-1/2} \widehat{\Sigma}(k)\textrm{diag}\{\widehat{\Sigma}(0)\}^{-1/2}
+#'  }
+#'  be the sample autocorrelation matrix at lag \eqn{k}, where
+#'   \eqn{\widehat{\Sigma}(k)} is the sample autocovariance matrix. Consider the hypothesis testing problem
+#' \deqn{
+#'  H_0:\{\varepsilon_t\}~\mbox{is white noise}~~~\textrm{versus}
+#'  ~~~H_1:\{\varepsilon_t\}~\mbox{is not white noise}.
+#'}
+#'
+#' To test the above hypothesis of multivariate or high dimensional white noise,
+#' we include the traditional portmanteau tests with test statistics:
+#'  \eqn{Q_{1}  = n \sum_{k=1}^K \textrm{tr}\{\widehat{\Gamma}(k)^{T}
+#'     \widehat{\Gamma}(k)\}},  \eqn{Q_{2}  =
+#'   n^2 \sum_{k=1}^K\textrm{tr}\{\widehat{\Gamma}(k)^{T} \widehat{\Gamma}(k)\}/(n-k)},
+#'   and \eqn{Q_{3}  = n \sum_{k=1}^K
+#' \textrm{tr}\{\widehat{\Gamma}(k)^{T}\widehat{\Gamma}(k)\} + p^2K(K+1)/(2n)}.
+#'   Also, we include the Lagranage multiplier test  as well as the Tiao-Box likelihood ratio test.
+#' For  the portmanteau tests, both \eqn{\chi^2}-approximation and normal approximation are reported.
+#'
+#' Since \eqn{\Gamma(k) \equiv 0} for any \eqn{k\geq1} under \eqn{H_0},
+#' the newly proposed maximum cross-correlation-based test uses statistic
+#' \deqn{
+#'  T_n=\max_{1\leq k\leq K}T_{n,k},
+#' }
+#'  where \eqn{T_{n,k}=\max_{1\leq i, j\leq p}{n}^{1/2}|\widehat{\rho}_{ij}(k)|}
+#'   and \eqn{K\ge 1} is prescribed. Null is rejected whenever \eqn{T_n>\textrm{cv}_\alpha},
+#'   where \eqn{\textrm{cv}_\alpha >0} is the critical value determined by novel bootstrap
+#'   method proposed by
+#'   Chang, Yao and Zhou (2017) with no further assumptions   on the data structures.
+#'
+#' @param Y A \eqn{p} by \eqn{n} data matrix with \eqn{p} time series of length \eqn{n}.
+#' @param k_max The largest time lag to be tested for white noise (default is \eqn{10}).
+#' @param kk A vector of time lags using for test (ex. \eqn{kk = \texttt{seq}(2,10, \texttt{by} = 2)}),
+#' scalar is allowed and the largest kk must be less than k_max.
+#' @param M Number of bootstrap replicates, ex. \eqn{2000}.
+#' @param k0 A parameter in time series PCA for pre-transformation (default is \eqn{10}).
+#' @param delta The thresholding parameter in time series PCA for pre-transformation
+#' (default is \eqn{1.5}).
+#' @param type Tests to be performed:
+#' 1 is coded for  the newly proposed maximum cross-correlation-based
+#' test for high-dimensional white noise by Chang, Yao and Zhou (2017);
+#' 2 is coded for the Lagrange multiplier test;
+#' 3 is coded for the three portmanteau tests, where results for both
+#' \eqn{\chi^2} and normal approximations are reported; and
+#' 4 is coded for the Tiao-Box likelihoood ratio-based test.
+#' @param alpha Level of significance (default is \eqn{0.05}).
+#' @param opt Options for pre-transformation of time series. That is, one considers a transformation
+#' matrix \eqn{A_{n\times p}} and corresponding pre-transformed data \eqn{AY}. For parameter
+#' `opt',
+#' 1 is coded for performing the transformation
+#'  using package `fastclime' and user-specific tuning parameter \eqn{\lambda} for
+#'  estimating the contempaneous correlations;
+#' 2 is coded for performing the  transformation using the sample covariance;
+#' 3 is coded for performing the  transformation using
+#' package `clime' with build-in cross validation on the tuning parameter for estimating the contempaneous correlations;
+#' 4 is coded for performing the transformation using
+#' `fastclime' with cross validation on the tuning parameter for estimating the contempaneous correlations; and
+#' else do not perform the transformation.
+#' @param lambda The tuning parameter used in package `fastclime',
+#' which is required for `opt=1'.
+#'  The default value is \eqn{0.1}.
+#' @param lambda_search The tuning parameters search for package `fastclime', which is required
+#' for `opt=4' (default is \eqn{\texttt{seq}(1e-4, 1e-2, \texttt{length.out} = 50)}).
+#' @param fold Number of folds used in cross validations (default is \eqn{5}).
+#' @param S1 True contempaneous \eqn{p\times p} covariance matrix of the data
+#'  if it is known in advance. If provided, pre-transformation will use S1 instead of options in
+#'  `opt'.
+#' @param cv_opt Specify which tuning parameter and the corresponding
+#' estimated contempenous correlation (and the precision) matrix to be used for the pre-transformation.
+#'  For example, `cv_opt = 2' will choose \eqn{\lambda} and the estimated contempenous correlation (and the precision) matrix
+#'  with the second
+#'   smallest cross validation error (default value is \eqn{1}, the minimun error).
 #' @import fastclime
 #' @import clime
 #' @import foreach
 #' @author Meng Cao, Wen Zhou
-#' @references Chang, J., Yao, Q. and Zhou, W., 2017. Testing for high-dimensional white noise using maximum cross-correlations. Biometrika, 104(1), pp.111-127.
-#' @references Cai, T.T., Liu, W., and Luo, X. (2011). A constrained `1 minimization approach for sparse precision matrix estimation. Journal of the American Statistical Association 106(494): 594-607.
-#' @references L\"utkepohl, Helmut. New introduction to multiple time series analysis. Springer Science & Business Media, 2005.
-#' @return res white noise test result (0) or not (1).
-#' p_value P_value for the result.
-#' M1 Square root matrix of the estimated inverse covariance matrix if transfermation applied.
+#' @references Chang, J., Yao, Q. and Zhou, W., 2017. Testing for high-dimensional white noise using maximum cross-correlations. Biometrika, 104(1): 111-127.
+#' @references Cai, T.T., Liu, W., and Luo, X., 2011. A constrained L1 minimization approach for sparse precision matrix estimation. Journal of the American Statistical Association 106(494): 594-607.
+#' @references Lutkepohl, H., 2005. New introduction to multiple time series analysis. Springer Science & Business Media.
+#' @return
+#' \item{res}{Test output: fail to reject (coded as \eqn{0}) or reject (coded as \eqn{1}).}
+#' \item{p_value}{\eqn{p}-values or approximated \eqn{p}-value.}
+#' \item{M1}{Square root  of the estimated contempenous precision matrix
+#' if pre-transfermation was applied.}
 #' @examples
 #' library(expm)
 #' p = 15
@@ -58,8 +117,9 @@
 #' delta = 1.5
 #' alpha = 0.05
 #' wntest(X, M, k_max, kk, type = 1, opt = 0)
+#' \dontrun{
 #' wntest(X, M, k_max, kk, type = 1, opt = 4, cv_opt = 1)
-#'
+#'}
 #' @export
 wntest = function(Y, M, k_max = 10, kk, type = 1, alpha = 0.05,
                   k0 = 10, delta = 1.5, opt = 1, lambda = 0.01,
