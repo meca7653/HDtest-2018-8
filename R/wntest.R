@@ -112,7 +112,7 @@
 #' X = S11 %*% matrix(rt(n*p, df = 8), ncol = n)
 #' k_max = 10
 #' kk = seq(2, k_max, 2)
-#' M = 2000
+#' M = 500
 #' k0 = 10
 #' delta = 1.5
 #' alpha = 0.05

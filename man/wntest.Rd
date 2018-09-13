@@ -5,8 +5,8 @@
 \title{Testing for multivariate or high dimensional white noise}
 \usage{
 wntest(Y, M, k_max = 10, kk, type = 1, alpha = 0.05, k0 = 10,
-  delta = 1.5, opt = 1, lambda = 0.01, lambda_search = seq(1e-04, 0.01,
-  length.out = 50), fold = 5, S1 = NULL, cv_opt = NULL)
+  delta = 1.5, opt = 1, lambda = 0.01, lambda_search = seq(1e-04,
+  0.01, length.out = 50), fold = 5, S1 = NULL, cv_opt = NULL)
 }
 \arguments{
 \item{Y}{A \eqn{p} by \eqn{n} data matrix with \eqn{p} time series of length \eqn{n}.}
@@ -132,7 +132,7 @@ S11 = sqrtm(S1)
 X = S11 \%*\% matrix(rt(n*p, df = 8), ncol = n)
 k_max = 10
 kk = seq(2, k_max, 2)
-M = 2000
+M = 500
 k0 = 10
 delta = 1.5
 alpha = 0.05
